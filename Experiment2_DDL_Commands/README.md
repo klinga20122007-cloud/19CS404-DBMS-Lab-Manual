@@ -1,5 +1,3 @@
-# Experiment 2: DDL Commands
-
 ## AIM
 To study and implement DDL commands and different types of constraints.
 
@@ -104,124 +102,312 @@ CREATE TABLE Table_Name (
 ```
 
 **Question 1**
---
--- Paste Question 1 here
+---
+Create a table named Employees with the following constraints:
+
+EmployeeID should be the primary key.
+FirstName and LastName should be NOT NULL.
+Email should be unique.
+Salary should be greater than 0.
+DepartmentID should be a foreign key referencing the Departments table.
+For example:
+
+Test	   |  Result
+-------  | -------
+Attempt to insert a record with NULL FirstName<br>INSERT INTO Employees (EmployeeID, FirstName, LastName, Email, Salary, DepartmentID)<br>VALUES (1, NULL, 'Doe', 'john.doe@example.com', 50000, 1);| Error: NOT NULL constraint failed: Employees.FirstName
+
 
 ```sql
--- Paste your SQL code below for Question 1
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE,
+    Salary DECIMAL(10,2) CHECK (Salary > 0),
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
 ```
 
 **Output:**
 
-![Output1](output.png)
+<img width="886" height="378" alt="image" src="https://github.com/user-attachments/assets/d370fb35-9ad5-4a2d-8e8f-dd4809de37e1" />
+
 
 **Question 2**
 ---
--- Paste Question 2 here
+Create a table named Events with the following columns:
+
+EventID as INTEGER
+EventName as TEXT
+EventDate as DATE
+For example:
+
+```
+Test	Result
+pragma table_info('Events');
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           EventID     INTEGER     0                       0
+1           EventName   TEXT        0                       0
+2           EventDate   DATE        0                       0
+```
+
 
 ```sql
--- Paste your SQL code below for Question 2
+CREATE TABLE Events (
+    EventID INTEGER,
+    EventName TEXT,
+    EventDate DATE
+);
 ```
 
 **Output:**
 
-![Output2](output.png)
+<img width="910" height="289" alt="image" src="https://github.com/user-attachments/assets/ad4e1b82-4bdf-4dec-8693-b21085503507" />
 
 **Question 3**
 ---
--- Paste Question 3 here
+Create a table named Bonuses with the following constraints:
+BonusID as INTEGER should be the primary key.
+EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
+BonusAmount as REAL should be greater than 0.
+BonusDate as DATE.
+Reason as TEXT should not be NULL.
+
+```
+Test	Result
+INSERT INTO Bonuses (BonusID, EmployeeID, BonusAmount, BonusDate, Reason) VALUES (1, 6, 1000.0, '2024-08-01', 'Outstanding performance');
+SELECT * FROM Bonuses;
+BonusID     EmployeeID  BonusAmount  BonusDate   Reason
+----------  ----------  -----------  ----------  -----------------------
+1           6           1000.0       2024-08-01  Outstanding performance
+```
 
 ```sql
--- Paste your SQL code below for Question 3
+CREATE TABLE Bonuses (
+    BonusID INTEGER PRIMARY KEY,
+    EmployeeID INTEGER,
+    BonusAmount REAL CHECK (BonusAmount > 0),
+    BonusDate DATE,
+    Reason TEXT NOT NULL,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
 ```
 
 **Output:**
 
-![Output3](output.png)
+<img width="923" height="233" alt="image" src="https://github.com/user-attachments/assets/98833043-b578-45bb-9868-358ab7b369bb" />
 
 **Question 4**
 ---
--- Paste Question 4 here
+Write an SQL command can to add a column named email of type TEXT to the customers table
 
+```
+Test	Result
+pragma table_info('Customers');
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           id          integer     0                       0
+1           name        text        0                       0
+2           email       TEXT        0                       0
+```
 ```sql
--- Paste your SQL code below for Question 4
+ALTER TABLE Customers
+ADD COLUMN email TEXT;
 ```
 
 **Output:**
 
-![Output4](output.png)
+<img width="902" height="251" alt="image" src="https://github.com/user-attachments/assets/7b892074-6619-4f6d-ba4b-cd1869441dd3" />
 
 **Question 5**
 ---
--- Paste Question 5 here
+Write a SQL Query  to change the name of attribute "name" to "first_name"  and add mobilenumber as number ,DOB as Date in the table Companies. 
+
+```
+Test	Result
+pragma table_info('Companies');
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           id          int         0                       0
+1           first_name  varchar(50  0                       0
+2           address     text        0                       0
+3           email       varchar(50  0                       0
+4           phone       varchar(10  0                       0
+5           mobilenumb  number      0                       0
+6           DOB         Date        0                       0
+```
 
 ```sql
--- Paste your SQL code below for Question 5
+ALTER TABLE Companies RENAME COLUMN name TO first_name;
+
+ALTER TABLE Companies ADD COLUMN mobilenumber number;
+
+ALTER TABLE Companies ADD COLUMN DOB Date;
 ```
 
 **Output:**
 
-![Output5](output.png)
+<img width="902" height="297" alt="image" src="https://github.com/user-attachments/assets/de261a22-6c33-4f89-a95f-0b6168140a50" />
 
 **Question 6**
 ---
--- Paste Question 6 here
+Insert the below data into the Student_details table, allowing the Subject and MARKS columns to take their default values.
+
+RollNo      |Name          |Gender      
+----------  |------------  |----------  
+204         |Samuel Black  |M          
+
+Note: The Subject and MARKS columns will use their default values.
+
+```
+Test	Result
+SELECT RollNo, Name, Gender 
+FROM Student_details 
+WHERE RollNo = 204;
+
+
+RollNo      Name          Gender
+----------  ------------  ----------
+204         Samuel Black  M
+```
 
 ```sql
--- Paste your SQL code below for Question 6
+INSERT INTO Student_details (RollNo, Name, Gender)
+VALUES (204, 'Samuel Black', 'M');
 ```
 
 **Output:**
 
-![Output6](output.png)
+<img width="928" height="248" alt="image" src="https://github.com/user-attachments/assets/dbcc90db-a4a8-4801-af4a-fc0958eb6b72" />
 
 **Question 7**
 ---
--- Paste Question 7 here
+Write a SQL Query for inserting the below values in the table Customers
+```
+ID               NAME             AGE  ADDRESS     SALARY      
+---------------  ---------------  ---  ----------  ----------  
+1                Ramesh           32   Ahmedabad   2000
+2                Khilan           25   Delhi       1500
+3                Kaushik          23   Kota        2000
+```
+For example:
+
+```
+Test	Result
+SELECT * FROM Customers;
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+1           Ramesh      32          Ahmedabad   2000
+2           Khilan      25          Delhi       1500
+3           Kaushik     23          Kota        2000
+
+```
 
 ```sql
--- Paste your SQL code below for Question 7
+INSERT INTO Customers (ID, NAME, AGE, ADDRESS, SALARY)
+VALUES
+(1, 'Ramesh', 32, 'Ahmedabad', 2000),
+(2, 'Khilan', 25, 'Delhi', 1500),
+(3, 'Kaushik', 23, 'Kota', 2000);
 ```
 
 **Output:**
 
-![Output7](output.png)
+<img width="898" height="251" alt="image" src="https://github.com/user-attachments/assets/d722d99b-da5c-4aeb-9d52-938f17036fc5" />
 
 **Question 8**
 ---
--- Paste Question 8 here
+Create a new table named orders with the following specifications:
+ord_id as TEXT with a length of 4.
+item_id as TEXT.
+ord_date as DATE.
+ord_qty as INTEGER.
+cost as INTEGER.
+The primary key is a composite key consisting of item_id and ord_date.
+ord_id and item_id should not accept NULL
+For example:
+
+```
+Test	Result
+INSERT INTO orders (ord_id, item_id, ord_date, ord_qty, cost) VALUES ('O001', 'I001', '2023-08-01', 10, 100);
+SELECT * FROM orders;
+ord_id      item_id     ord_date    ord_qty     cost
+----------  ----------  ----------  ----------  ----------
+O001        I001        2023-08-01  10          100
+```
 
 ```sql
--- Paste your SQL code below for Question 8
+CREATE TABLE orders (
+    ord_id VARCHAR(4) NOT NULL,
+    item_id TEXT NOT NULL,
+    ord_date DATE NOT NULL,
+    ord_qty INTEGER,
+    cost INTEGER,
+    PRIMARY KEY (item_id, ord_date)
+);
 ```
 
 **Output:**
 
-![Output8](output.png)
+<img width="1024" height="324" alt="image" src="https://github.com/user-attachments/assets/2773f878-b65a-4c97-bd48-f297f18abc59" />
 
 **Question 9**
 ---
--- Paste Question 9 here
+Insert all employees from Former_employees into Employee
+
+Table attributes are EmployeeID, Name, Department, Salary
+
+For example:
+```
+Test	Result
+select * from Employee;
+EmployeeID  Name        Department  Salary
+----------  ----------  ----------  ----------
+201         John Doe    HR          50000
+202         Jane Smith  Engineerin  75000
+203         Emily Davi  Marketing   60000
+```
 
 ```sql
--- Paste your SQL code below for Question 9
+INSERT INTO Employee (EmployeeID, Name, Department, Salary)
+SELECT EmployeeID, Name, Department, Salary
+FROM Former_employees;
 ```
 
 **Output:**
 
-![Output9](output.png)
+<img width="910" height="231" alt="image" src="https://github.com/user-attachments/assets/c6c72ef1-74d0-4dcc-b1b8-b0fd131e0f8b" />
 
 **Question 10**
 ---
--- Paste Question 10 here
+Create a table named ProjectAssignments with the following constraints:
+AssignmentID as INTEGER should be the primary key.
+EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
+ProjectID as INTEGER should be a foreign key referencing Projects(ProjectID).
+AssignmentDate as DATE should be NOT NULL.
+For example:
+```
+Test	Result
+INSERT INTO ProjectAssignments (AssignmentID, EmployeeID, ProjectID, AssignmentDate) VALUES (2, 99, 1, '2024-01-03');
+Error: FOREIGN KEY constraint failed
+```
 
 ```sql
--- Paste your SQL code below for Question 10
+CREATE TABLE ProjectAssignments (
+    AssignmentID INTEGER PRIMARY KEY,
+    EmployeeID INTEGER,
+    ProjectID INTEGER,
+    AssignmentDate DATE NOT NULL,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+);
 ```
 
 **Output:**
 
-![Output10](output.png)
+<img width="901" height="245" alt="image" src="https://github.com/user-attachments/assets/3414bcde-77db-4abb-a416-c6128c7f0f2f" />
 
 
 ## RESULT
